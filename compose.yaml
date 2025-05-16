@@ -1,0 +1,53 @@
+services:
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entryPoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.email=nikkotanns@gmail.com  # Замените на ваш email
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik_network
+
+  app:
+    image: app
+    env_file:
+      - .env
+    networks:
+      - traefik_network
+    expose:
+      - "8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`api.bookvault.ru`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=le"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"
+
+  static:
+    image: static
+    networks:
+      - traefik_network
+    expose:
+      - "4000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.static.rule=Host(`bookvault.ru`)"
+      - "traefik.http.routers.static.entrypoints=websecure"
+      - "traefik.http.routers.static.tls.certresolver=le"
+      - "traefik.http.services.static.loadbalancer.server.port=4000"
+
+networks:
+  traefik_network:
+    driver: bridge

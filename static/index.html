@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>BookVault</title>
+  <meta name="viewport" content="width=600">
+  <style>
+    body {
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 6px 32px 0 rgba(44,62,80,0.07);
+      padding: 40px 60px 32px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 340px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+    }
+    .download-btn {
+      background-color: #3498db;
+      color: white;
+      border: 1px solid #2980b9;
+      border-radius: 5px;
+      padding: 12px 32px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 16px;
+      box-shadow: 0 2px 8px 0 rgba(44,62,80,0.04);
+      outline: none;
+    }
+    .download-btn:hover {
+      background-color: #2980b9;
+    }
+    .download-btn:active {
+      background-color: #1f6dad;
+      padding-left: 15px;
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">BookVault</div>
+    <a href="/download">
+      <button class="download-btn">Download</button>
+    </a>
+  </div>
+</body>
+</html>

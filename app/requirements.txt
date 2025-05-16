@@ -1,0 +1,11 @@
+fastapi[all]
+uvicorn
+python-jose
+sqlalchemy
+aioboto3
+pydantic-settings
+asyncpg
+passlib==1.7.4
+unidecode
+pyjwt
+bcrypt==4.0.1
