@@ -183,7 +183,6 @@ async def create_book(
     books_service: BooksService = Depends(get_books_service),
     current_user: UserRead = Depends(get_current_user),
 ):
-    # Получаем коллекцию через CollectionsService
     collection = await collections_service.get_collection(collection_uuid)
     if not collection:
         raise HTTPException(
@@ -192,7 +191,6 @@ async def create_book(
         )
     check_ownership(current_user, collection.user_login)
     
-    # Создаем книгу через BooksService
     book = await books_service.create_book(
         title=book_data.title,
         author=book_data.author,
@@ -219,7 +217,6 @@ async def upload_book_file(
     check_ownership(current_user, collection.user_login)
 
     try:
-        # Преобразуем имя файла в ASCII
         filename_ascii = unidecode(file.filename)
         
         file_key = f"books/{book.uuid}"
@@ -232,7 +229,7 @@ async def upload_book_file(
 
         updated_book = await books_service.update_file_name(
             book_uuid=book.uuid,
-            file_name=filename_ascii  # Используем преобразованное имя
+            file_name=filename_ascii
         )
         await books_service.session.commit()
         return updated_book
@@ -255,7 +252,6 @@ async def download_book_file(
     if not book or not book.file_name:
         raise HTTPException(status_code=404, detail="File not found")
     
-    # Получаем коллекцию через CollectionsService
     collection = await collections_service.get_collection(book.collection_uuid)
     check_ownership(current_user, collection.user_login)
 
@@ -293,7 +289,6 @@ async def get_book(
             detail="Book not found"
         )
     
-    # Получаем коллекцию через CollectionsService
     collection = await collections_service.get_collection(book.collection_uuid)
     check_ownership(current_user, collection.user_login)
     return book
@@ -305,14 +300,12 @@ async def get_collection_books(
     books_service: BooksService = Depends(get_books_service),
     current_user: UserRead = Depends(get_current_user),
 ):
-    # Получаем коллекцию через CollectionsService
     collection = await collections_service.get_collection(collection_uuid)
     if not collection:
         raise HTTPException(status_code=404, detail="Collection not found")
     
     check_ownership(current_user, collection.user_login)
     
-    # Получаем книги через BooksService
     books = await books_service.get_collection_books(collection_uuid)
     return books
 
@@ -331,7 +324,6 @@ async def update_book(
             detail="Book not found"
         )
     
-    # Получаем коллекцию через CollectionsService
     collection = await collections_service.get_collection(book.collection_uuid)
     check_ownership(current_user, collection.user_login)
     
