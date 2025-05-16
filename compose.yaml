@@ -14,6 +14,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    restart: always
     volumes:
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -28,6 +29,7 @@ services:
       - traefik_network
     expose:
       - "8000"
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`api.bookvault.ru`)"
@@ -41,6 +43,7 @@ services:
       - traefik_network
     expose:
       - "4000"
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.static.rule=Host(`bookvault.ru`)"
