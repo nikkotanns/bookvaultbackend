@@ -18,6 +18,6 @@ async def main_page():
 async def download_file():
     return FileResponse(
         path=FILE_PATH,
-        filename="BookVaultInstaller.exe",
+        filename="BookVault.exe",
         media_type='application/octet-stream'
     )
